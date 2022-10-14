@@ -1,0 +1,16 @@
+
+
+
+-incluir barra de navegacion a todas las paginas
+
+-traer informacion al escanear codigo o ingresarlo manualmente en pagina produ.php
+
+-achicar logo
+
+-en ABM stock programar:
+		-que no lea el valor cero (listo)
+		-mensaje de carga de bolson correcta (listo)
+		-modificar estilo de titulo
+
+
+-descripcion o bienvenido en index o imagen que se desvanesca algo no tan llamativo pero ataractivo (sugerencia de toledo)
