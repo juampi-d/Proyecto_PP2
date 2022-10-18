@@ -1,4 +1,5 @@
 <?php include ("header.php") ?>
+<?php include("conexion.php") ?>
 
 
   <!-- Body-->
@@ -6,69 +7,47 @@
     
     <link href="css/style.css" rel="stylesheet" type="text/css" />
   </head>
-  <body> 
-    
-    <div id="resultado"></div>
-
-    <div id="camera" ></div>
-
-    <script src="js/quagga.min.js"> 
-    </script>
-    
-  </style>
+  
 
 
-  <!--     <script>
-
-        Quagga.init({
-            inputStream: 
-            {
-              name: "Live",
-              type: "LiveStream",
-              target: document.querySelector('#camera'),
-              constraints: {
-                height: 380,
-                width: 180,
-                        
-                      }
-                          
-            },
-            decoder: {
-                readers: ["code_128_reader"] 
-                        
-            }
-        }, function (err) {
-            if (err) {
-                console.log(err);
-                return
-            }
-            console.log("Initialization finished. Ready to start");
-            Quagga.start();
-        });
-
-        Quagga.onDetected(function (data) {
-            console.log(data.codeResult.code);
-            document.querySelector('#resultado').innerText = data.codeResult.code;
-        });
-        
-    </script> 
-  -->
     
   <form action="produ.php" method="post">
     <div class="mb-3">
-      <label for="" class="form-label">Codigo SAP</label>
+      <label for="" class="form-label">Codigo de bolsa</label>
       <input type="text" name="Codigo_scan" id="" class="form-control" placeholder="" aria-describedby="helpId">
     </div>
     <button type="submit" class="btn btn-primary" name="submit">Submit</button>
   </form>
     <?php
-    if(isset($_POST['submit'])){
-      echo $_POST['Codigo_scan'];
+    if(isset($_POST['submit'])){ 
+      $bolsa=$_POST["Codigo_scan"];
+      $objconexion = new conexion();
+      $resultado=$objconexion->consultar(
+          "SELECT bolsa_id, bolsas.peso, bolsas.lote_id, materiales.codigo_sap, materiales.nombre, bolsas.estatus FROM `bolsas` 
+          JOIN lotes ON lotes.lote_id=bolsas.lote_id 
+          JOIN materiales ON lotes.cod_sap=materiales.codigo_sap 
+          WHERE bolsas.bolsa_id=$bolsa;");
+          $bolsa=$resultado[0];
+      echo "<table>
+      <tr>
+        <td>ID de bolsa</td><td>$bolsa[0]</td>
+      </tr>
+      <tr>
+        <td>ID de lote</td><td>$bolsa[2]</td>
+      </tr>
+      <tr>
+        <td>Material</td><td>$bolsa[3] - $bolsa[4]</td>
+      </tr>
+      <tr>
+        <td>Peso</td><td>$bolsa[1]</td>
+      </tr>
+      <tr>
+        <td>Estatus</td><td>$bolsa[5]</td>
+      </tr>
+    </table>";
     }
     ?>
-    
-  </body>
-
+   
 
 
   <?php include ("footer.php") ?>
